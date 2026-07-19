@@ -5,13 +5,7 @@ from sqlalchemy import (
     String,
     Boolean,
     Float,
-    create_engine,
-    ForeignKey,
 )
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-Base = declarative_base()
 
 
 class Movie(Base):
@@ -21,6 +15,6 @@ class Movie(Base):
     title = Column(String)
     release_year = Column(Integer)
     description = Column(String)
-    genre_id = Column(Integer, ForeignKey("genres.id"))
+    genre_id = Column(Integer)
     rating = Column(Float)
     watched = Column(Boolean)

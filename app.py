@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
+from models.base import Base
 from models.movie import Movie
 from models.user import User
 from schemas.movie import MovieCreate, MovieUpdate, MovieOut # ⬅️ импорт схем
@@ -16,6 +17,7 @@ DATABASE_URL = "sqlite:///" + os.path.join(os.path.dirname(__file__), "movies.db
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
