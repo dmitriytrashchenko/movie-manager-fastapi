@@ -1,98 +1,38 @@
-# Менеджер фильмов (Movie Manager API)
+# Movie Manager API (CRUD_app)
 
-Это CRUD-приложение на Python с использованием FastAPI и SQLAlchemy для управления базой данных фильмов.
+Учебный pet-проект: REST API для управления коллекцией фильмов, сделан для прокачки FastAPI/SQLAlchemy/JWT (см. `Чему я научился.txt`).
 
----
+## Статус
+Живой. Возрождён и протестирован 2026-07-19 (см. [[Changelog]]).
 
-## О проекте
-
-- Позволяет добавлять, получать, обновлять и удалять фильмы.
-- Использует SQLite для хранения данных.
-- Поддерживает аутентификацию через JWT токены.
-- Реализован с использованием FastAPI, SQLAlchemy, Pydantic.
-- Swagger UI доступен по адресу `/docs`.
-
----
+## Стек
+- Python 3.11+, FastAPI, SQLAlchemy, Pydantic
+- SQLite (реально используется как БД)
+- JWT-аутентификация (python-jose) + bcrypt-хеширование паролей (passlib)
+- Docker/docker-compose поднимает Postgres-контейнер, но `app.py` жёстко использует SQLite — Postgres в docker-compose сейчас не используется приложением. См. [[Known_Issues]].
 
 ## Установка и запуск
-
-1. Клонируйте репозиторий
-```bash
-git clone <your_repo_url>
-cd <your_project_folder>
-```
-
-2. Создайте виртуальное окружение и активируйте его
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate   # Windows
-```
-
-3. Установите зависимости
-```bash
+venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-```
-
-4. Запустите приложение
-```bash
 uvicorn app:app --reload
 ```
+Swagger UI: http://127.0.0.1:8000/docs
 
-5. Откройте в браузере [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) для тестирования API
+## Эндпоинты
+- `POST /register` — регистрация пользователя
+- `POST /token` — логин, получение JWT
+- `POST /movies/`, `GET /movies/` (с фильтрами genre_id/release_year/rating/watched), `GET /movies/{id}`, `PUT /movies/{id}`, `DELETE /movies/{id}`
 
----
-
-## Структура проекта
-
+## Структура
 ```
-movies_manager/
-|-- movies_manager/
-|   |-- __init__.py
-|   |-- main.py
-|-- models/
-|   |-- __init__.py
-|   |-- base.py
-|   |-- movie.py
-|   |-- user.py
-|-- db/
-|   |-- __init__.py
-|   |-- base.py
-|-- app.py
-|-- README.md
-|-- requirements.txt
+app.py              — все роуты (movies + auth)
+models/              — SQLAlchemy-модели (Movie, User) + общий Base
+schemas/              — Pydantic-схемы
+utils/security.py    — хеширование паролей, JWT
 ```
 
----
-
-## Используемые технологии
-
-- Python 3.9+
-- FastAPI
-- SQLAlchemy
-- Pydantic
-- SQLite
-- Uvicorn
-
----
-
-## Аутентификация
-
-- Используется OAuth2 с JWT токенами.
-- Токен выдаётся по эндпоинту `/token`.
-- Защищённые маршруты требуют передачи токена.
-
----
-
-## Как использовать
-
-- Создайте пользователя (если реализовано).
-- Получите токен через `/token`.
-- Используйте токен в заголовке Authorization: Bearer `<token>` для доступа к защищённым маршрутам.
-- Управляйте фильмами через эндпоинты `/movies/`.
-
----
-
-## Контакты
-
-По вопросам и предложениям обращайтесь к автору проекта.
+## GitHub
+- Репозиторий: https://github.com/dmitriytrashchenko/movie-manager-fastapi
+- Синхронизирован: да
